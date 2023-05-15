@@ -48,11 +48,12 @@ class Board:
     def __str__(self):
         acc_string = ""
         for i in range(7, -1, -1):
-            acc_string += f"{i + 1}  "
+            acc_string += f"{i + 1}"
             for j in range(8):
-                acc_string += f"{self.tiles[j][i]} "
+                acc_string += f"\t{self.tiles[j][i]}"
             acc_string += "\n"
-        acc_string += "\n   a b c d e f g h"
+        acc_string += "\n\ta\tb\tc\td\te\tf\tg\th"
+        print("\n")
         return acc_string
 
     def get_moves(self, color):
@@ -71,7 +72,7 @@ class Board:
             for i in range(8):
                 for j in range(8):
                     if self.tiles[i][j].is_occupied() and self.tiles[i][j].get_piece().get_color() == color and \
-                            str(self.tiles[i][j].get_piece()).lower() == 'k':
+                            self.tiles[i][j].get_piece().get_value() == '0':
                         x, y = i, j
             remove_these = []
             for i in range(len(moves)):
@@ -101,7 +102,7 @@ class Board:
             for j in range(8):
                 if (self.tiles[i][j].is_occupied() and
                         self.tiles[i][j].get_piece().get_color() == color and
-                        str(self.tiles[i][j].get_piece()).lower() == "k"):
+                        self.tiles[i][j].get_piece().get_value() == '0'):
                     x, y = i, j
         # check a move if after making this move the king can be killed (moving into check)
         opponent_moves = self.get_moves_with_check(not color, False)
@@ -118,7 +119,7 @@ class Board:
             for j in range(8):
                 if (new_tiles[i][j].is_occupied() and
                         new_tiles[i][j].get_piece().get_color() == color and
-                        str(new_tiles[i][j].get_piece()).lower() == "k"):
+                        self.tiles[i][j].get_piece().get_value() == '0'):
                     x, y = i, j
         # check a move if after making this move the king can be killed (moving into check)
         opponent_moves = self.get_moves_after_with_check(not color, moves, False)
@@ -165,9 +166,9 @@ class Board:
                 self.tiles[self.d][8 - 1] = self.tiles[self.a][8 - 1]
                 self.tiles[self.a][8 - 1] = Tile()
         # pawn at top?
-        if str(old_tile.get_piece()) == "P" and move.get_y2() == 8 - 1:
+        if old_tile.get_piece().get_value() == 1 and old_tile.get_piece().get_color() and move.get_y2() == 8 - 1:
             self.tiles[move.get_x2()][move.get_y2()] = Tile(Queen(Piece.WHITE))
-        if str(old_tile.get_piece()) == "p" and move.get_y2() == 1 - 1:
+        if old_tile.get_piece().get_value() == 1 and not old_tile.get_piece().get_color() and move.get_y2() == 1 - 1:
             self.tiles[move.get_x2()][move.get_y2()] = Tile(Queen(Piece.BLACK))
         return 0
 

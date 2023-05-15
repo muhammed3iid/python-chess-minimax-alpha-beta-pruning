@@ -10,9 +10,9 @@ class Queen(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "Q"
+            return '\u2655'
         else:
-            return "q"
+            return '\u265B'
 
     def clone(self):
         return Queen(self.color)

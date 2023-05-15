@@ -1,4 +1,4 @@
-from Players.MinimaxPlayer import MinimaxPLayer
+from Players.MinimaxPlayer import MinimaxPlayer
 from Board import Board
 from Pieces.Piece import Piece
 from Players.RandomPlayer import RandomPlayer
@@ -8,7 +8,7 @@ def main():
     player1_score = 0
     draw = 0
     board = Board()
-    player1 = MinimaxPLayer(Piece.WHITE, 2)
+    player1 = MinimaxPlayer(Piece.WHITE,2)
     player2 = RandomPlayer(Piece.BLACK)
     winner = play(player1, player2, board)
     if winner == 1:

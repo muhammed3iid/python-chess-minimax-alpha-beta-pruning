@@ -10,9 +10,9 @@ class Rook(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "R"
+            return '\u2656'
         else:
-            return "r"
+            return '\u265C'
 
     def clone(self):
         return Rook(self.color)

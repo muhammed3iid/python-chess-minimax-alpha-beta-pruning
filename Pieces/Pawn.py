@@ -10,9 +10,9 @@ class Pawn(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "P"
+            return '\u2659'
         else:
-            return "p"
+            return '\u265F'
 
     def clone(self):
         return Pawn(self.color)

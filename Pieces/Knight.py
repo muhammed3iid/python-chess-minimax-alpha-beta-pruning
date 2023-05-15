@@ -10,9 +10,9 @@ class Knight(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "N"
+            return '\u2658'
         else:
-            return "n"
+            return '\u265E'
 
     def clone(self):
         return Knight(self.color)

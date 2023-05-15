@@ -2,7 +2,7 @@ from Minimax.Minimax import Minimax
 from Players.Player import Player
 
 
-class MinimaxPLayer(Player):
+class MinimaxPlayer(Player):
 
     def __init__(self, color, max_depth):
         super().__init__(color)

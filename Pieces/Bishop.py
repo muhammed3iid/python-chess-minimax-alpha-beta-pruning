@@ -10,9 +10,9 @@ class Bishop(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "B"
+            return '\u2657'
         else:
-            return "b"
+            return '\u265D'
 
     def clone(self):
         return Bishop(self.color)

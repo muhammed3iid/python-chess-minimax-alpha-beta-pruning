@@ -21,9 +21,9 @@ class King(Piece):
 
     def __str__(self):
         if self.color == Piece.WHITE:
-            return "K"
+            return '\u2654'
         else:
-            return "k"
+            return '\u265A'
 
     def clone(self):
         return King(self.color, self.has_moved)
