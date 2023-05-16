@@ -1,14 +1,17 @@
+from Pieces.King import King
+from Pieces.Pawn import Pawn
 from Players.MinimaxPlayer import MinimaxPlayer
 from Board import Board
 from Pieces.Piece import Piece
 from Players.RandomPlayer import RandomPlayer
+from Tile import Tile
 
 
 def main():
     player1_score = 0
     draw = 0
     board = Board()
-    player1 = MinimaxPlayer(Piece.WHITE,2)
+    player1 = MinimaxPlayer(Piece.WHITE, 2)
     player2 = RandomPlayer(Piece.BLACK)
     winner = play(player1, player2, board)
     if winner == 1:
@@ -40,6 +43,7 @@ def play(player1, player2, b):
             return 0
         result = b.make_move(move)
         print(b)
+
 
 if __name__ == "__main__":
     main()

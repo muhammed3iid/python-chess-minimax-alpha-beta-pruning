@@ -9,6 +9,5 @@ class MinimaxPlayer(Player):
         self.minimax = Minimax(color, max_depth)
 
     def get_next_move(self, board):
-        # moves = board.get_moves(self.color)
         move = self.minimax.decision(board)
         return move

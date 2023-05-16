@@ -1,7 +1,6 @@
 import random
-import time
-from concurrent.futures import ThreadPoolExecutor, Future, as_completed, ProcessPoolExecutor
-
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent import futures
 from Pieces.Piece import Piece
 
 
@@ -12,32 +11,32 @@ class Minimax:
         self.max_depth = max_depth
         self.rand = random.Random()
 
-    def max_value(self, b, state, alpha, beta, depth):
+    def max_value(self, board, state, alpha, beta, depth):
         if depth > self.max_depth:
-            return self.eval1(b, state, self.color)
-        moves = b.get_moves_after(self.color, state)
+            return self.eval1(board, state, self.color)
+        moves = board.get_moves_after(self.color, state)
         if len(moves) == 0:
             return float('-inf')
         for i in range(len(moves)):
             state.append(moves[i])
-            tmp = self.min_value(b, state, alpha, beta, depth+1)
-            state.pop(state.index(moves[i]))
+            tmp = self.min_value(board, state, alpha, beta, depth + 1)
+            state.remove(state[state[::-1].index(moves[i])])
             if tmp > alpha:
                 alpha = tmp
             if beta <= alpha:
                 break
         return alpha
 
-    def min_value(self, b, state, alpha, beta, depth):
+    def min_value(self, board, state, alpha, beta, depth):
         if depth > self.max_depth:
-            return self.eval1(b, state, not self.color)
-        moves = b.get_moves_after(not self.color, state)
+            return self.eval1(board, state, not self.color)
+        moves = board.get_moves_after(not self.color, state)
         if len(moves) == 0:
             return float('inf')
         for i in range(len(moves)):
             state.append(moves[i])
-            tmp = self.max_value(b, state, alpha, beta, depth+1)
-            state.pop(state.index(moves[i]))
+            tmp = self.max_value(board, state, alpha, beta, depth + 1)
+            state.remove(state[state[::-1].index(moves[i])])
             if tmp < beta:
                 beta = tmp
             if beta <= alpha:
@@ -46,19 +45,18 @@ class Minimax:
 
     def decision(self, board):
         moves = board.get_moves(self.color)
-        if not moves:
+        if len(moves) == 0:
             return None
         costs = []
-        # costs = [None] * len(moves)
-        # costs = [Future() for _ in range(len(moves))]
+
         with ProcessPoolExecutor(max_workers=len(moves)) as executor:
-            # futures = []
+            futures = []
             for move in moves:
                 state = [move]
                 future = executor.submit(self.min_value, board, state, float('-inf'), float('inf'), 1)
                 costs.append(future)
-            # for i, future in enumerate(as_completed(futures)):
-            #     costs[i] = future.result()
+        for i, future in enumerate(as_completed(futures)):
+            costs[i] = future.result()
         maxi = -1
         max_cost = float('-inf')
         for i, cost in enumerate(costs):
@@ -74,6 +72,7 @@ class Minimax:
                 max_cost = cost
                 maxi = i
         return moves[maxi]
+
 
     def single_thread_decision(self, b):
         # get maximum move
@@ -129,9 +128,9 @@ class Minimax:
         for i in range(8):
             for j in range(8):
                 if tiles[i][j].is_occupied():
-                    if str(tiles[i][j].get_piece()) == "K":
+                    if tiles[i][j].get_piece().get_value() == 0 and tiles[i][j].get_piece().get_color() == Piece.WHITE:
                         white_king = True
-                    if str(tiles[i][j].get_piece()) == "k":
+                    if tiles[i][j].get_piece().get_value() == 0 and tiles[i][j].get_piece().get_color() != Piece.WHITE:
                         black_king = True
         if self.color == Piece.WHITE:
             if not white_king:

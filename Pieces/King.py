@@ -2,6 +2,7 @@ from abc import abstractmethod
 
 from Move import Move
 from Pieces.Piece import Piece
+from Pieces.Rook import Rook
 
 
 class King(Piece):
@@ -13,11 +14,6 @@ class King(Piece):
             self.has_moved = False
         else:
             self.has_moved = args[1]
-
-    # def __init__(self, color, has_moved):
-    #     super().__init__(color)
-    #     self.has_moved = has_moved
-    #     self.value = 0
 
     def __str__(self):
         if self.color == Piece.WHITE:
@@ -84,13 +80,17 @@ class King(Piece):
                 if not b.get_tile(b.f, 1 - 1).is_occupied() and \
                         not b.get_tile(b.g, 1 - 1).is_occupied() and \
                         b.get_tile(b.h, 1 - 1).is_occupied() and \
-                        str(b.get_tile(b.h, 1 - 1).get_piece()) == "R":
+                        isinstance(b.get_tile(b.h, 1 - 1).get_piece(), Rook):
                     moves.append(Move(x, y, x + 2, y))
             else:
                 self.has_moved = True
         else:  # color == Piece.BLACK
             if not self.has_moved and x == b.e and y == 8 - 1:
-                pass
+                if not b.get_tile(b.f, 8 - 1).is_occupied() and \
+                        not b.get_tile(b.g, 8 - 1).is_occupied() and \
+                        b.get_tile(b.h, 8 - 1).is_occupied() and \
+                        isinstance(b.get_tile(b.h, 8 - 1).get_piece(), Rook):
+                    moves.append(Move(x, y, x + 2, y))
             else:
                 self.has_moved = True
         return moves

@@ -1,6 +1,3 @@
-from typing import List
-
-from Move import Move
 from Pieces.Bishop import Bishop
 from Pieces.King import King
 from Pieces.Knight import Knight
@@ -72,12 +69,10 @@ class Board:
             for i in range(8):
                 for j in range(8):
                     if self.tiles[i][j].is_occupied() and self.tiles[i][j].get_piece().get_color() == color and \
-                            self.tiles[i][j].get_piece().get_value() == '0':
+                            isinstance(self.tiles[i][j].get_piece(), King):
                         x, y = i, j
             remove_these = []
             for i in range(len(moves)):
-                if i >= len(moves):
-                    continue
                 # check a move if after making this move the king can be killed (moving into check)
                 check_this = moves[i:i+1]
                 opponent_moves = self.get_moves_after_with_check(not color, check_this, False)
@@ -93,6 +88,10 @@ class Board:
                         #     moves.remove(check_this[0])
             # for move in remove_these:
                 # moves.remove(move)  # remove invalid moves
+            # for i in remove_these:
+            #     for j in moves:
+            #         if remove_these[i] == moves[j]:
+            #             moves.remove(moves[i])
             moves = [move for move in moves if move not in remove_these]
         return moves
 
@@ -102,13 +101,13 @@ class Board:
             for j in range(8):
                 if (self.tiles[i][j].is_occupied() and
                         self.tiles[i][j].get_piece().get_color() == color and
-                        self.tiles[i][j].get_piece().get_value() == '0'):
+                        isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
         # check a move if after making this move the king can be killed (moving into check)
         opponent_moves = self.get_moves_with_check(not color, False)
         # check all opponent moves if they kill king (opponent moves in next round)
-        for move in range(len(opponent_moves)):
-            if opponent_moves[move].get_x2() == x and opponent_moves[move].get_y2() == y:
+        for move in opponent_moves:
+            if move.get_x2() == x and move.get_y2() == y:
                 return True
         return False
 
@@ -119,7 +118,7 @@ class Board:
             for j in range(8):
                 if (new_tiles[i][j].is_occupied() and
                         new_tiles[i][j].get_piece().get_color() == color and
-                        self.tiles[i][j].get_piece().get_value() == '0'):
+                        isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
         # check a move if after making this move the king can be killed (moving into check)
         opponent_moves = self.get_moves_after_with_check(not color, moves, False)
@@ -130,7 +129,7 @@ class Board:
         return False
 
     def get_moves_after_with_check(self, color, moves, check):
-        temp = [[Tile(t) for t in row] for row in self.tiles]
+        temp = [[Tile(self.tiles[x][y]) for y in range(8)] for x in range(8)]
         b = Board(temp)
         for move in moves:
             b.make_move(move)
@@ -141,7 +140,7 @@ class Board:
         return self.get_moves_after_with_check(color, moves, True)
 
     def get_tiles_after(self, moves):
-        temp = [[Tile(t) for t in row] for row in self.tiles]
+        temp = [[Tile(self.tiles[x][y]) for y in range(8)] for x in range(8)]
         b = Board(temp)
         for move in moves:
             b.make_move(move)
@@ -166,9 +165,9 @@ class Board:
                 self.tiles[self.d][8 - 1] = self.tiles[self.a][8 - 1]
                 self.tiles[self.a][8 - 1] = Tile()
         # pawn at top?
-        if old_tile.get_piece().get_value() == 1 and old_tile.get_piece().get_color() and move.get_y2() == 8 - 1:
+        if isinstance(old_tile.get_piece(), Pawn) and old_tile.get_piece().get_color() and move.get_y2() == 8 - 1:
             self.tiles[move.get_x2()][move.get_y2()] = Tile(Queen(Piece.WHITE))
-        if old_tile.get_piece().get_value() == 1 and not old_tile.get_piece().get_color() and move.get_y2() == 1 - 1:
+        if isinstance(old_tile.get_piece(), Pawn) and not old_tile.get_piece().get_color() and move.get_y2() == 1 - 1:
             self.tiles[move.get_x2()][move.get_y2()] = Tile(Queen(Piece.BLACK))
         return 0
 
