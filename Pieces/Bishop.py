@@ -19,7 +19,7 @@ class Bishop(Piece):
 
     def get_moves(self, board, x, y):
         moves = []
-        # Traverse north-east
+
         for i in range(1, 8):
             if self.is_valid(x + i, y + i):
                 if board.get_tile(x + i, y + i).is_occupied():
@@ -28,7 +28,7 @@ class Bishop(Piece):
                     break
                 else:
                     moves.append(Move(x, y, x + i, y + i))
-        # Traverse north-west
+
         for i in range(1, 8):
             if self.is_valid(x - i, y + i):
                 if board.get_tile(x - i, y + i).is_occupied():
@@ -37,7 +37,7 @@ class Bishop(Piece):
                     break
                 else:
                     moves.append(Move(x, y, x - i, y + i))
-        # Traverse south-east
+
         for i in range(1, 8):
             if self.is_valid(x + i, y - i):
                 if board.get_tile(x + i, y - i).is_occupied():
@@ -46,7 +46,7 @@ class Bishop(Piece):
                     break
                 else:
                     moves.append(Move(x, y, x + i, y - i))
-        # Traverse south-west
+
         for i in range(1, 8):
             if self.is_valid(x - i, y - i):
                 if board.get_tile(x - i, y - i).is_occupied():

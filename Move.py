@@ -10,12 +10,7 @@ class Move:
         else:
             self.castling = args[4]
 
-    # def __init__(self, x1, y1, x2, y2, castling):
-    #     self.x1 = x1
-    #     self.y1 = y1
-    #     self.x2 = x2
-    #     self.y2 = y2
-    #     self.castling = castling
+
 
     def __str__(self):
         return chr(ord('A') + self.x1) + str(self.y1 + 1) + " " + chr(ord('A') + self.x2) + str(self.y2 + 1)

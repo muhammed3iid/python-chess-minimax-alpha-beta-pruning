@@ -74,7 +74,7 @@ class King(Piece):
                  or (b.get_tile(x - 1, y + 1).is_occupied() and b.get_tile(x - 1,
                                                                            y + 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x - 1, y + 1))
-        # Castling
+
         if self.color == Piece.WHITE:
             if not self.has_moved and x == b.e and y == 1 - 1:
                 if not b.get_tile(b.f, 1 - 1).is_occupied() and \
@@ -84,7 +84,7 @@ class King(Piece):
                     moves.append(Move(x, y, x + 2, y))
             else:
                 self.has_moved = True
-        else:  # color == Piece.BLACK
+        else:
             if not self.has_moved and x == b.e and y == 8 - 1:
                 if not b.get_tile(b.f, 8 - 1).is_occupied() and \
                         not b.get_tile(b.g, 8 - 1).is_occupied() and \

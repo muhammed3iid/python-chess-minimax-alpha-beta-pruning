@@ -20,36 +20,10 @@ class Pawn(Piece):
     def get_moves(self, b, x, y):
         moves = []
         if self.color == Piece.WHITE:
-            # forward
-            # if self.is_valid(x, y + 1) \
-            #         and not b.get_tile(x, y + 1).is_occupied():
-            #     moves.append(Move(x, y, x, y + 1))
-            # # kill diagonally
-            # if self.is_valid(x + 1, y + 1) \
-            #         and b.get_tile(x + 1, y + 1).is_occupied() \
-            #         and b.get_tile(x + 1, y + 1).get_piece().get_color() != self.color:
-            #     moves.append(Move(x, y, x + 1, y + 1))
-            # # kill diagonally
-            # if self.is_valid(x - 1, y + 1) \
-            #         and b.get_tile(x - 1, y + 1).is_occupied() \
-            #         and b.get_tile(x - 1, y + 1).get_piece().get_color() != self.color:
-            #     moves.append(Move(x, y, x - 1, y + 1))
+
             moves = self.white_pawn_moves(b, x, y, moves)
         else:
-            # forward
-            # if self.is_valid(x, y - 1) \
-            #         and not b.get_tile(x, y - 1).is_occupied():
-            #     moves.append(Move(x, y, x, y - 1))
-            # # kill diagonally
-            # if self.is_valid(x + 1, y - 1) \
-            #         and b.get_tile(x + 1, y - 1).is_occupied() \
-            #         and b.get_tile(x + 1, y - 1).get_piece().get_color() != self.color:
-            #     moves.append(Move(x, y, x + 1, y - 1))
-            # # kill diagonally
-            # if self.is_valid(x - 1, y - 1) \
-            #         and b.get_tile(x - 1, y - 1).is_occupied() \
-            #         and b.get_tile(x - 1, y - 1).get_piece().get_color() != self.color:
-            #     moves.append(Move(x, y, x - 1, y - 1))
+
             moves = self.black_pawn_moves(b, x, y, moves)
         return moves
 
@@ -57,12 +31,12 @@ class Pawn(Piece):
         if self.is_valid(x, y + 1) \
                 and not b.get_tile(x, y + 1).is_occupied():
             moves.append(Move(x, y, x, y + 1))
-        # kill diagonally
+
         if self.is_valid(x + 1, y + 1) \
                 and b.get_tile(x + 1, y + 1).is_occupied() \
                 and b.get_tile(x + 1, y + 1).get_piece().get_color() != self.color:
             moves.append(Move(x, y, x + 1, y + 1))
-        # kill diagonally
+
         if self.is_valid(x - 1, y + 1) \
                 and b.get_tile(x - 1, y + 1).is_occupied() \
                 and b.get_tile(x - 1, y + 1).get_piece().get_color() != self.color:
@@ -70,16 +44,16 @@ class Pawn(Piece):
         return moves
 
     def black_pawn_moves(self, b, x, y, moves):
-        # forward
+
         if self.is_valid(x, y - 1) \
                 and not b.get_tile(x, y - 1).is_occupied():
             moves.append(Move(x, y, x, y - 1))
-        # kill diagonally
+
         if self.is_valid(x + 1, y - 1) \
                 and b.get_tile(x + 1, y - 1).is_occupied() \
                 and b.get_tile(x + 1, y - 1).get_piece().get_color() != self.color:
             moves.append(Move(x, y, x + 1, y - 1))
-        # kill diagonally
+
         if self.is_valid(x - 1, y - 1) \
                 and b.get_tile(x - 1, y - 1).is_occupied() \
                 and b.get_tile(x - 1, y - 1).get_piece().get_color() != self.color:

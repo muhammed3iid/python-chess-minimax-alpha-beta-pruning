@@ -62,9 +62,9 @@ class Board:
             for j in range(8):
                 if self.tiles[i][j].is_occupied() and self.tiles[i][j].get_piece().get_color() == color:
                     moves.extend(self.tiles[i][j].get_piece().get_moves(self, i, j))
-        # check if move is valid (must not be checked after move) and throw away erroneous moves
+
         if check:
-            # find king (of correct color)
+
             x, y = -1, -1
             for i in range(8):
                 for j in range(8):
@@ -73,25 +73,18 @@ class Board:
                         x, y = i, j
             remove_these = []
             for i in range(len(moves)):
-                # check a move if after making this move the king can be killed (moving into check)
+
                 check_this = moves[i:i+1]
                 opponent_moves = self.get_moves_after_with_check(not color, check_this, False)
                 x_updated, y_updated = x, y
                 if check_this[0].get_x1() == x and check_this[0].get_y1() == y:
-                    # get updated king position
+
                     x_updated, y_updated = check_this[0].get_x2(), check_this[0].get_y2()
-                # check all opponent moves if they kill king (opponent moves in next round)
+
                 for j in range(len(opponent_moves)):
                     if opponent_moves[j].get_x2() == x_updated and opponent_moves[j].get_y2() == y_updated:
                         remove_these.append(check_this[0])
-                        # if check_this[0] in moves:
-                        #     moves.remove(check_this[0])
-            # for move in remove_these:
-                # moves.remove(move)  # remove invalid moves
-            # for i in remove_these:
-            #     for j in moves:
-            #         if remove_these[i] == moves[j]:
-            #             moves.remove(moves[i])
+
             moves = [move for move in moves if move not in remove_these]
         return moves
 
@@ -103,9 +96,9 @@ class Board:
                         self.tiles[i][j].get_piece().get_color() == color and
                         isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
-        # check a move if after making this move the king can be killed (moving into check)
+
         opponent_moves = self.get_moves_with_check(not color, False)
-        # check all opponent moves if they kill king (opponent moves in next round)
+
         for move in opponent_moves:
             if move.get_x2() == x and move.get_y2() == y:
                 return True
@@ -120,9 +113,9 @@ class Board:
                         new_tiles[i][j].get_piece().get_color() == color and
                         isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
-        # check a move if after making this move the king can be killed (moving into check)
+
         opponent_moves = self.get_moves_after_with_check(not color, moves, False)
-        # check all opponent moves if they kill king (opponent moves in next round)
+
         for move in opponent_moves:
             if move.get_x2() == x and move.get_y2() == y:
                 return True

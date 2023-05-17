@@ -15,13 +15,7 @@ class Tile:
             self.occupied = False
             self.piece = None
 
-    # def __init__(self, tile):
-    #     self.occupied = tile.is_occupied()
-    #     self.piece = tile.get_piece().clone() if tile.is_occupied() else None
-    #
-    # def __init__(self, piece):
-    #     self.occupied = True
-    #     self.piece = piece
+
 
     def __str__(self):
         if self.occupied:

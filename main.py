@@ -1,10 +1,9 @@
-from Pieces.King import King
-from Pieces.Pawn import Pawn
+
 from Players.MinimaxPlayer import MinimaxPlayer
 from Board import Board
 from Pieces.Piece import Piece
 from Players.RandomPlayer import RandomPlayer
-from Tile import Tile
+
 
 
 def main():
@@ -30,16 +29,16 @@ def play(player1, player2, b):
         if turn > 200:
             return 0
         move = player1.get_next_move(b)
-        if move is None and b.is_check(player1.get_color()):  # check and can't move
+        if move is None and b.is_check(player1.get_color()):
             return -1
-        if move is None:  # no check but can't move
+        if move is None:
             return 0
         result = b.make_move(move)
         print(b)
         move = player2.get_next_move(b)
         if move is None and b.is_check(player2.get_color()):
             return 1
-        if move is None:  # no check but can't move
+        if move is None:
             return 0
         result = b.make_move(move)
         print(b)

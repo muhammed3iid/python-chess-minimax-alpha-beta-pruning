@@ -63,7 +63,7 @@ class Minimax:
             try:
                 cost = cost.result()
             except Exception:
-                # time.sleep(0.3)
+
                 continue
             if cost >= max_cost:
                 if abs(cost - max_cost) < 0.1:
@@ -75,7 +75,7 @@ class Minimax:
 
 
     def single_thread_decision(self, b):
-        # get maximum move
+
         moves = b.get_moves(self.color)
         state = []
         costs = []
@@ -84,7 +84,7 @@ class Minimax:
             cost = self.min_value(b, state, float('-inf'), float('inf'), 1)
             costs.append(cost)
             state.remove(state[-1])
-        # max
+
         maxi = -1
         max_cost = float('-inf')
         for i, cost in enumerate(costs):
