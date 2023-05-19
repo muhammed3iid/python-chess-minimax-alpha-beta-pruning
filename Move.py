@@ -10,8 +10,6 @@ class Move:
         else:
             self.castling = args[4]
 
-
-
     def __str__(self):
         return chr(ord('A') + self.x1) + str(self.y1 + 1) + " " + chr(ord('A') + self.x2) + str(self.y2 + 1)
 

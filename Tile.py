@@ -15,8 +15,6 @@ class Tile:
             self.occupied = False
             self.piece = None
 
-
-
     def __str__(self):
         if self.occupied:
             return str(self.piece)

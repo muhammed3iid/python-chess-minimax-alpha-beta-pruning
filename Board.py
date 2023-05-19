@@ -16,7 +16,7 @@ class Board:
             self.tiles = args[0]
         else:
             color = Piece.WHITE
-            self.tiles = [[Tile() for j in range(8)] for i in range(8)]
+            self.tiles = [[Tile() for _ in range(8)] for _ in range(8)]
             self.tiles[Board.a][1 - 1] = Tile(Rook(color))
             self.tiles[Board.b][1 - 1] = Tile(Knight(color))
             self.tiles[Board.c][1 - 1] = Tile(Bishop(color))
@@ -62,29 +62,24 @@ class Board:
             for j in range(8):
                 if self.tiles[i][j].is_occupied() and self.tiles[i][j].get_piece().get_color() == color:
                     moves.extend(self.tiles[i][j].get_piece().get_moves(self, i, j))
-
         if check:
-
             x, y = -1, -1
             for i in range(8):
                 for j in range(8):
-                    if self.tiles[i][j].is_occupied() and self.tiles[i][j].get_piece().get_color() == color and \
+                    if self.tiles[i][j].is_occupied() and \
+                            self.tiles[i][j].get_piece().get_color() == color and \
                             isinstance(self.tiles[i][j].get_piece(), King):
                         x, y = i, j
             remove_these = []
             for i in range(len(moves)):
-
                 check_this = moves[i:i+1]
                 opponent_moves = self.get_moves_after_with_check(not color, check_this, False)
                 x_updated, y_updated = x, y
                 if check_this[0].get_x1() == x and check_this[0].get_y1() == y:
-
                     x_updated, y_updated = check_this[0].get_x2(), check_this[0].get_y2()
-
                 for j in range(len(opponent_moves)):
                     if opponent_moves[j].get_x2() == x_updated and opponent_moves[j].get_y2() == y_updated:
                         remove_these.append(check_this[0])
-
             moves = [move for move in moves if move not in remove_these]
         return moves
 
@@ -96,9 +91,7 @@ class Board:
                         self.tiles[i][j].get_piece().get_color() == color and
                         isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
-
         opponent_moves = self.get_moves_with_check(not color, False)
-
         for move in opponent_moves:
             if move.get_x2() == x and move.get_y2() == y:
                 return True
@@ -113,9 +106,7 @@ class Board:
                         new_tiles[i][j].get_piece().get_color() == color and
                         isinstance(self.tiles[i][j].get_piece(), King)):
                     x, y = i, j
-
         opponent_moves = self.get_moves_after_with_check(not color, moves, False)
-
         for move in opponent_moves:
             if move.get_x2() == x and move.get_y2() == y:
                 return True

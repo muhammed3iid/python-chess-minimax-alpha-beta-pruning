@@ -24,73 +24,91 @@ class King(Piece):
     def clone(self):
         return King(self.color, self.has_moved)
 
-    def get_moves(self, b, x, y):
+    def get_moves(self, board, x, y):
         moves = []
-        # N
+        self.traverse_north(board, x, y, moves)
+        self.traverse_north_east(board, x, y, moves)
+        self.traverse_east(board, x, y, moves)
+        self.traverse_south_east(board, x, y, moves)
+        self.traverse_south(board, x, y, moves)
+        self.traverse_south_west(board, x, y, moves)
+        self.traverse_west(board, x, y, moves)
+        self.traverse_north_west(board, x, y, moves)
+        self.castling(board, x, y, moves)
+        return moves
+
+    def traverse_north(self, board, x, y, moves):
         if self.is_valid(x, y + 1) and \
-                (not b.get_tile(x, y + 1).is_occupied()
-                 or (b.get_tile(x, y + 1).is_occupied() and b.get_tile(x,
-                                                                       y + 1).get_piece().get_color() != self.color)):
+                (not board.get_tile(x, y + 1).is_occupied() or
+                 (board.get_tile(x, y + 1).is_occupied() and
+                  board.get_tile(x, y + 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x, y + 1))
-        # NE
+
+    def traverse_north_east(self, board, x, y, moves):
         if self.is_valid(x + 1, y + 1) and \
-                (not b.get_tile(x + 1, y + 1).is_occupied()
-                 or (b.get_tile(x + 1, y + 1).is_occupied() and b.get_tile(x + 1,
-                                                                           y + 1).get_piece().get_color() != self.color)):
+                (not board.get_tile(x + 1, y + 1).is_occupied() or
+                 (board.get_tile(x + 1, y + 1).is_occupied() and
+                  board.get_tile(x + 1, y + 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x + 1, y + 1))
-        # E
+
+    def traverse_east(self, board, x, y, moves):
         if self.is_valid(x + 1, y) and \
-                (not b.get_tile(x + 1, y).is_occupied()
-                 or (b.get_tile(x + 1, y).is_occupied() and b.get_tile(x + 1,
-                                                                       y).get_piece().get_color() != self.color)):
+                (not board.get_tile(x + 1, y).is_occupied() or
+                 (board.get_tile(x + 1, y).is_occupied() and
+                  board.get_tile(x + 1, y).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x + 1, y))
-        # SE
+
+    def traverse_south_east(self, board, x, y, moves):
         if self.is_valid(x + 1, y - 1) and \
-                (not b.get_tile(x + 1, y - 1).is_occupied()
-                 or (b.get_tile(x + 1, y - 1).is_occupied() and b.get_tile(x + 1,
-                                                                           y - 1).get_piece().get_color() != self.color)):
+                (not board.get_tile(x + 1, y - 1).is_occupied() or
+                 (board.get_tile(x + 1, y - 1).is_occupied() and
+                  board.get_tile(x + 1, y - 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x + 1, y - 1))
-        # S
+
+    def traverse_south(self, board, x, y, moves):
         if self.is_valid(x, y - 1) and \
-                (not b.get_tile(x, y - 1).is_occupied()
-                 or (b.get_tile(x, y - 1).is_occupied() and b.get_tile(x,
-                                                                       y - 1).get_piece().get_color() != self.color)):
+                (not board.get_tile(x, y - 1).is_occupied() or
+                 (board.get_tile(x, y - 1).is_occupied() and
+                  board.get_tile(x, y - 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x, y - 1))
-        # SW
+
+    def traverse_south_west(self, board, x, y, moves):
         if self.is_valid(x - 1, y - 1) and \
-                (not b.get_tile(x - 1, y - 1).is_occupied()
-                 or (b.get_tile(x - 1, y - 1).is_occupied() and b.get_tile(x - 1,
-                                                                           y - 1).get_piece().get_color() != self.color)):
+                (not board.get_tile(x - 1, y - 1).is_occupied() or
+                 (board.get_tile(x - 1, y - 1).is_occupied() and
+                  board.get_tile(x - 1, y - 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x - 1, y - 1))
-        # W
+
+    def traverse_west(self, board, x, y, moves):
         if self.is_valid(x - 1, y) and \
-                (not b.get_tile(x - 1, y).is_occupied()
-                 or (b.get_tile(x - 1, y).is_occupied() and b.get_tile(x - 1,
-                                                                       y).get_piece().get_color() != self.color)):
+                (not board.get_tile(x - 1, y).is_occupied() or
+                 (board.get_tile(x - 1, y).is_occupied() and
+                     board.get_tile(x - 1, y).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x - 1, y))
-        # NW
+
+    def traverse_north_west(self, board, x, y, moves):
         if self.is_valid(x - 1, y + 1) and \
-                ((not b.get_tile(x - 1, y + 1).is_occupied())
-                 or (b.get_tile(x - 1, y + 1).is_occupied() and b.get_tile(x - 1,
-                                                                           y + 1).get_piece().get_color() != self.color)):
+                ((not board.get_tile(x - 1, y + 1).is_occupied()) or
+                 (board.get_tile(x - 1, y + 1).is_occupied() and
+                     board.get_tile(x - 1, y + 1).get_piece().get_color() != self.color)):
             moves.append(Move(x, y, x - 1, y + 1))
 
+    def castling(self, board, x, y, moves):
         if self.color == Piece.WHITE:
-            if not self.has_moved and x == b.e and y == 1 - 1:
-                if not b.get_tile(b.f, 1 - 1).is_occupied() and \
-                        not b.get_tile(b.g, 1 - 1).is_occupied() and \
-                        b.get_tile(b.h, 1 - 1).is_occupied() and \
-                        isinstance(b.get_tile(b.h, 1 - 1).get_piece(), Rook):
+            if not self.has_moved and x == board.e and y == 1 - 1:
+                if not board.get_tile(board.f, 1 - 1).is_occupied() and \
+                        not board.get_tile(board.g, 1 - 1).is_occupied() and \
+                        board.get_tile(board.h, 1 - 1).is_occupied() and \
+                        isinstance(board.get_tile(board.h, 1 - 1).get_piece(), Rook):
                     moves.append(Move(x, y, x + 2, y))
             else:
                 self.has_moved = True
         else:
-            if not self.has_moved and x == b.e and y == 8 - 1:
-                if not b.get_tile(b.f, 8 - 1).is_occupied() and \
-                        not b.get_tile(b.g, 8 - 1).is_occupied() and \
-                        b.get_tile(b.h, 8 - 1).is_occupied() and \
-                        isinstance(b.get_tile(b.h, 8 - 1).get_piece(), Rook):
+            if not self.has_moved and x == board.e and y == 8 - 1:
+                if not board.get_tile(board.f, 8 - 1).is_occupied() and \
+                        not board.get_tile(board.g, 8 - 1).is_occupied() and \
+                        board.get_tile(board.h, 8 - 1).is_occupied() and \
+                        isinstance(board.get_tile(board.h, 8 - 1).get_piece(), Rook):
                     moves.append(Move(x, y, x + 2, y))
             else:
                 self.has_moved = True
-        return moves

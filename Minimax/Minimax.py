@@ -1,6 +1,6 @@
 import random
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from concurrent import futures
+
 from Pieces.Piece import Piece
 
 
@@ -48,7 +48,6 @@ class Minimax:
         if len(moves) == 0:
             return None
         costs = []
-
         with ProcessPoolExecutor(max_workers=len(moves)) as executor:
             futures = []
             for move in moves:
@@ -60,10 +59,10 @@ class Minimax:
         maxi = -1
         max_cost = float('-inf')
         for i, cost in enumerate(costs):
+            # noinspection PyBroadException
             try:
                 cost = cost.result()
             except Exception:
-
                 continue
             if cost >= max_cost:
                 if abs(cost - max_cost) < 0.1:
@@ -73,18 +72,15 @@ class Minimax:
                 maxi = i
         return moves[maxi]
 
-
-    def single_thread_decision(self, b):
-
-        moves = b.get_moves(self.color)
+    def single_thread_decision(self, board):
+        moves = board.get_moves(self.color)
         state = []
         costs = []
         for move in moves:
             state.append(move)
-            cost = self.min_value(b, state, float('-inf'), float('inf'), 1)
+            cost = self.min_value(board, state, float('-inf'), float('inf'), 1)
             costs.append(cost)
             state.remove(state[-1])
-
         maxi = -1
         max_cost = float('-inf')
         for i, cost in enumerate(costs):
@@ -99,10 +95,10 @@ class Minimax:
         else:
             return moves[maxi]
 
-    def eval1(self, b, moves, current_color):
-        tiles = b.get_tiles_after(moves)
-        if len(b.get_moves(current_color)) == 0:
-            if b.is_check_after(current_color, moves):
+    def eval1(self, board, moves, current_color):
+        tiles = board.get_tiles_after(moves)
+        if len(board.get_moves(current_color)) == 0:
+            if board.is_check_after(current_color, moves):
                 if current_color == self.color:
                     return float('-inf')
                 else:
@@ -122,8 +118,8 @@ class Minimax:
         else:
             return black_score - white_score
 
-    def eval2(self, b, moves, current_color):
-        tiles = b.get_tiles_after(moves)
+    def eval2(self, board, moves):
+        tiles = board.get_tiles_after(moves)
         black_king, white_king = False, False
         for i in range(8):
             for j in range(8):
