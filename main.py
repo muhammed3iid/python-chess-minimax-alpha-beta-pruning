@@ -19,10 +19,6 @@ def main():
     print(player1_score)
 
 
-if __name__ == "__main__":
-    main()
-
-
 def play(player1, player2, board):
     turn = 0
     while True:
@@ -43,3 +39,7 @@ def play(player1, player2, board):
             return 0
         board.make_move(move)
         print(board)
+
+
+if __name__ == "__main__":
+    main()
